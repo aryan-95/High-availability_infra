@@ -1,0 +1,40 @@
+version: 0.2
+
+# CI pipeline: install -> test -> validate -> build/package -> ready for deployment.
+# Deployment itself is done via `scripts/deploy.sh` (ASG instance refresh),
+# which can be invoked as a manual post-build step or wired into CodePipeline.
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - echo "Installing dependencies..."
+      - pip install --upgrade pip
+      - pip install -r app/requirements.txt
+
+  pre_build:
+    commands:
+      - echo "Running unit tests..."
+      - pytest tests/test_app.py -v
+
+  build:
+    commands:
+      - echo "Validating application can import cleanly..."
+      - python -c "import sys; sys.path.insert(0, 'app'); import app; print('app module OK')"
+      - echo "Validating Terraform syntax..."
+      - cd terraform && terraform init -backend=false -input=false && terraform validate
+      - cd ..
+      - echo "Packaging application artifact..."
+      - mkdir -p dist
+      - tar -czf dist/ha-deploy-app.tar.gz -C app .
+
+  post_build:
+    commands:
+      - echo "Build complete. Artifact at dist/ha-deploy-app.tar.gz"
+      - echo "To deploy, run scripts/deploy.sh <asg-name> to trigger a rolling instance refresh."
+
+artifacts:
+  files:
+    - dist/ha-deploy-app.tar.gz
+  discard-paths: yes

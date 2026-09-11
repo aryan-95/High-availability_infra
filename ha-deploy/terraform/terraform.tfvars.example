@@ -1,0 +1,23 @@
+# Copy this file to terraform.tfvars and adjust values.
+# terraform.tfvars is gitignored - never commit real secrets/keys.
+
+aws_region   = "us-east-1"
+environment  = "demo"
+project_name = "ha-deploy"
+
+instance_type = "t3.micro"
+
+# SSH is off by default. Only enable for debugging, and lock the CIDR down.
+enable_ssh       = false
+key_name         = ""
+ssh_allowed_cidr = "0.0.0.0/0"
+
+asg_min_size         = 2
+asg_desired_capacity = 2
+asg_max_size         = 6
+
+scale_out_cpu_threshold = 70
+scale_in_cpu_threshold  = 30
+
+app_version  = "1.0.0"
+app_repo_url = "https://github.com/CHANGE-ME/ha-deploy.git"

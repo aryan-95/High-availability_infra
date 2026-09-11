@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ app_name }} | HA-Deploy</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      padding: 40px 48px;
+      max-width: 560px;
+      width: 90%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    }
+    h1 { margin-top: 0; font-size: 1.8rem; color: #58c4dc; }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: #2ecc71;
+      color: #063;
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-bottom: 20px;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    td { padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    td.label { color: #9fd3e0; width: 45%; }
+    footer { margin-top: 24px; font-size: 0.75rem; color: #9aa5ab; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">● healthy</span>
+    <h1>{{ app_name }}</h1>
+    <p>Highly Available Web Architecture with Automated CI/CD on AWS</p>
+    <table>
+      <tr><td class="label">Environment</td><td>{{ environment }}</td></tr>
+      <tr><td class="label">EC2 Instance ID</td><td>{{ instance_id }}</td></tr>
+      <tr><td class="label">Availability Zone</td><td>{{ availability_zone }}</td></tr>
+      <tr><td class="label">Hostname</td><td>{{ hostname }}</td></tr>
+      <tr><td class="label">Application Version</td><td>{{ version }}</td></tr>
+    </table>
+    <footer>Refresh this page a few times — behind the ALB, different requests may land on different instances.</footer>
+  </div>
+</body>
+</html>
